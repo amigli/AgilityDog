@@ -26,72 +26,28 @@ public class SC_PlatformTile : MonoBehaviour
         
         System.Random random = new System.Random();
         //Genero un numero casuale, a cui corrispondono gli ostacoli NON di salto
-        int randomNumber = random.Next(3, 5);
+        int randomNumber = random.Next(0, 4);
 
         switch (randomNumber)
         {
-            case 3: int r = random.Next(0, 4);
-                if (r == 0 || r == 1)
-                {
-                    //è la rampa centrale
-                    obstacles[0].SetActive(true);
-                    ricompense[0].SetActive(true);
-                    penalty[0].SetActive(true);
-                    penalty[1].SetActive(true);
-                    currentPosition = obstacles[0].transform.position;
-                }
-
-                if (r == 2)
-                {
-                    //è la rampa a destra
-                    obstacles[2].SetActive(true);
-                    ricompense[2].SetActive(true); 
-                    penalty[2].SetActive(true);
-                    currentPosition = obstacles[2].transform.position;
-                }
-
-                if (r == 3)
-                {
-                    //è la rampa a sinistra
-                    obstacles[3].SetActive(true);
-                    ricompense[3].SetActive(true); 
-                    penalty[3].SetActive(true);
-                    currentPosition = obstacles[3].transform.position;
-                }
+            case 0: 
+                // Genero l'ostacolo di salto
+                obstacles[0].SetActive(true);
+                ricompense[0].SetActive(true);
+                ricompense[1].SetActive(true);
+                ricompense[2].SetActive(true);
                 break;
-            case 4: int ra = random.Next(0, 4);
-                if (ra == 0 || ra == 1)
-                {
-                    //è il tunnel centrale
-                    obstacles[1].SetActive(true);
-                    ricompense[1].SetActive(true); 
-                    penalty[0].SetActive(true);
-                    penalty[1].SetActive(true);
-                    penalty[4].SetActive(true);
-                    currentPosition = obstacles[1].transform.position;
-                }
-
-                if (ra == 2)
-                {
-                    //é il tunnel a destra
-                    obstacles[4].SetActive(true);
-                    ricompense[4].SetActive(true); 
-                    penalty[2].SetActive(true);
-                    penalty[5].SetActive(true);
-                    currentPosition = obstacles[4].transform.position;
-                }
-
-                if (ra == 3)
-                {
-                    //è il tunnel a sinistra
-                    obstacles[5].SetActive(true);
-                    ricompense[5].SetActive(true); 
-                    penalty[3].SetActive(true);
-                    penalty[6].SetActive(true);
-                    currentPosition = obstacles[5].transform.position;
-                }
-                
-                
+            case 1: 
+                // Genero l'albero a destra
+                obstacles[1].SetActive(true);
+                ricompense[3].SetActive(true);
+                penalty[0].SetActive(true);
+                break;
+            case 2:
+                // Genero l'albero a sinistra
+                obstacles[2].SetActive(true);
+                ricompense[4].SetActive(true);
+                penalty[1].SetActive(true);
                 break;
         }
 

@@ -118,12 +118,17 @@ public class AgilityDog : Agent
         }
         
 
-        if (collision.gameObject.CompareTag("WrongRight") || collision.gameObject.CompareTag("WrongLeft")
-            || collision.gameObject.CompareTag("WrongUp"))
+        if (collision.gameObject.CompareTag("WrongRight") || collision.gameObject.CompareTag("WrongLeft"))
         {
             AddReward(-0.5f);
             collision.gameObject.SetActive(false);
             SC_GroundGenerator.instance.score += -1;
+            EndEpisode();
+        }
+
+        if (collision.gameObject.CompareTag("Ostacolo"))
+        {
+            AddReward(-0.5f);
             EndEpisode();
         }
         

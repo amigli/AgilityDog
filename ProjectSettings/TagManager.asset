@@ -5,20 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
-  - Checkpoint
-  - Ostacolo4
-  - Ostacolo5
   - Ricompensa
-  - LatoInferiore
-  - Piattaforma
   - WrongLeft
   - WrongRight
-  - WrongUp
-  - Wrong
-  - OstacoloLeft
-  - OstacoloRight
-  - Ostacolo4_right
-  - Ostacolo4_left
+  - Ostacolo
+  - Piattaforma
   layers:
   - Default
   - TransparentFX
