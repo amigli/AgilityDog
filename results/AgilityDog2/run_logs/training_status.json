@@ -1,0 +1,47 @@
+{
+    "Agility2": {
+        "checkpoints": [
+            {
+                "steps": 499984,
+                "file_path": "results\\AgilityDog2\\Agility2\\Agility2-499984.onnx",
+                "reward": -0.4017857142857143,
+                "creation_time": 1706896031.8600388,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog2\\Agility2\\Agility2-499984.pt"
+                ]
+            },
+            {
+                "steps": 999984,
+                "file_path": "results\\AgilityDog2\\Agility2\\Agility2-999984.onnx",
+                "reward": -0.43414634146341463,
+                "creation_time": 1706905769.0350523,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog2\\Agility2\\Agility2-999984.pt"
+                ]
+            },
+            {
+                "steps": 1000035,
+                "file_path": "results\\AgilityDog2\\Agility2\\Agility2-1000035.onnx",
+                "reward": -0.4368932038834951,
+                "creation_time": 1706905769.125758,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog2\\Agility2\\Agility2-1000035.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000035,
+            "file_path": "results\\AgilityDog2\\Agility2.onnx",
+            "reward": -0.4368932038834951,
+            "creation_time": 1706905769.125758,
+            "auxillary_file_paths": [
+                "results\\AgilityDog2\\Agility2\\Agility2-1000035.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0.dev0",
+        "torch_version": "2.1.1+cpu"
+    }
+}

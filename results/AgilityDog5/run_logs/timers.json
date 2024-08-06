@@ -1,0 +1,216 @@
+{
+    "name": "root",
+    "gauges": {
+        "Agility5.Policy.Entropy.mean": {
+            "value": 0.2639150619506836,
+            "min": 0.012022305279970169,
+            "max": 0.769451379776001,
+            "count": 14
+        },
+        "Agility5.Policy.Entropy.sum": {
+            "value": 26421.59375,
+            "min": 1201.425048828125,
+            "max": 77009.7734375,
+            "count": 14
+        },
+        "Agility5.Environment.EpisodeLength.mean": {
+            "value": 47.78849902534113,
+            "min": 36.71062547098719,
+            "max": 48.203148057058534,
+            "count": 14
+        },
+        "Agility5.Environment.EpisodeLength.sum": {
+            "value": 98062.0,
+            "min": 97430.0,
+            "max": 98062.0,
+            "count": 14
+        },
+        "Agility5.Step.mean": {
+            "value": 1399987.0,
+            "min": 99984.0,
+            "max": 1399987.0,
+            "count": 14
+        },
+        "Agility5.Step.sum": {
+            "value": 1399987.0,
+            "min": 99984.0,
+            "max": 1399987.0,
+            "count": 14
+        },
+        "Agility5.Policy.ExtrinsicValueEstimate.mean": {
+            "value": 0.06635607033967972,
+            "min": -2.476393938064575,
+            "max": 0.0776490569114685,
+            "count": 14
+        },
+        "Agility5.Policy.ExtrinsicValueEstimate.sum": {
+            "value": 136.69351196289062,
+            "min": -6582.2548828125,
+            "max": 160.8112030029297,
+            "count": 14
+        },
+        "Agility5.Environment.CumulativeReward.mean": {
+            "value": 0.27577972580582544,
+            "min": -4.152695143358733,
+            "max": 0.2909046690983531,
+            "count": 14
+        },
+        "Agility5.Environment.CumulativeReward.sum": {
+            "value": 565.8999973535538,
+            "min": -11017.10021533072,
+            "max": 598.099999666214,
+            "count": 14
+        },
+        "Agility5.Policy.ExtrinsicReward.mean": {
+            "value": 0.2730219202809631,
+            "min": -4.1111682863998,
+            "max": 0.2879956138360129,
+            "count": 14
+        },
+        "Agility5.Policy.ExtrinsicReward.sum": {
+            "value": 560.2409804165363,
+            "min": -10906.92946381867,
+            "max": 592.1189820468426,
+            "count": 14
+        },
+        "Agility5.Losses.PolicyLoss.mean": {
+            "value": 0.0976174595314415,
+            "min": 0.09395824367423566,
+            "max": 0.10417983043088838,
+            "count": 14
+        },
+        "Agility5.Losses.PolicyLoss.sum": {
+            "value": 0.8785571357829736,
+            "min": 0.8654001612319759,
+            "max": 1.0141208200575655,
+            "count": 14
+        },
+        "Agility5.Losses.ValueLoss.mean": {
+            "value": 0.02321142438913349,
+            "min": 0.017048203284717223,
+            "max": 2.6870473840612568,
+            "count": 14
+        },
+        "Agility5.Losses.ValueLoss.sum": {
+            "value": 0.2089028195022014,
+            "min": 0.17048203284717223,
+            "max": 24.18342645655131,
+            "count": 14
+        },
+        "Agility5.Policy.LearningRate.mean": {
+            "value": 0.0002919083400305543,
+            "min": 0.0002919083400305543,
+            "max": 0.00029969125810291403,
+            "count": 14
+        },
+        "Agility5.Policy.LearningRate.sum": {
+            "value": 0.0026271750602749884,
+            "min": 0.0026271750602749884,
+            "max": 0.002991039164986946,
+            "count": 14
+        },
+        "Agility5.Policy.Epsilon.mean": {
+            "value": 0.29460555822222223,
+            "min": 0.29460555822222223,
+            "max": 0.2997941720000001,
+            "count": 14
+        },
+        "Agility5.Policy.Epsilon.sum": {
+            "value": 2.651450024,
+            "min": 2.651450024,
+            "max": 2.994026108,
+            "count": 14
+        },
+        "Agility5.Policy.Beta.mean": {
+            "value": 0.004865408677644444,
+            "min": 0.004865408677644444,
+            "max": 0.004994864591399999,
+            "count": 14
+        },
+        "Agility5.Policy.Beta.sum": {
+            "value": 0.043788678098799994,
+            "min": 0.043788678098799994,
+            "max": 0.0498509513946,
+            "count": 14
+        },
+        "Agility5.IsTraining.mean": {
+            "value": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "count": 14
+        },
+        "Agility5.IsTraining.sum": {
+            "value": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "count": 14
+        }
+    },
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1707745355",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\migli\\.conda\\envs\\mlagents\\Scripts\\mlagents-learn config/agilitydog2_config.yaml --run-id=AgilityDog5 --force",
+        "mlagents_version": "1.1.0.dev0",
+        "mlagents_envs_version": "1.1.0.dev0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.1.1+cpu",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1707777278"
+    },
+    "total": 31922.56269499997,
+    "count": 1,
+    "self": 0.2575231999508105,
+    "children": {
+        "run_training.setup": {
+            "total": 0.47673740005120635,
+            "count": 1,
+            "self": 0.47673740005120635
+        },
+        "TrainerController.start_learning": {
+            "total": 31921.82843439997,
+            "count": 1,
+            "self": 79.0463944694493,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 56.02742400002899,
+                    "count": 1,
+                    "self": 56.02742400002899
+                },
+                "TrainerController.advance": {
+                    "total": 31784.79981533042,
+                    "count": 1514132,
+                    "self": 35.96134800667642,
+                    "children": {
+                        "env_step": {
+                            "total": 31748.838467323745,
+                            "count": 1514132,
+                            "self": 27580.358628328016,
+                            "children": {
+                                "SubprocessEnvManager._take_step": {
+                                    "total": 4127.1015904753,
+                                    "count": 1514132,
+                                    "self": 164.15261115063913,
+                                    "children": {
+                                        "TorchPolicy.evaluate": {
+                                            "total": 3962.948979324661,
+                                            "count": 1483737,
+                                            "self": 3962.948979324661
+                                        }
+                                    }
+                                },
+                                "workers": {
+                                    "total": 41.378248520428315,
+                                    "count": 1514132,
+                                    "self": 0.0,
+                                    "children": {
+                                        "worker_root": {
+                                            "total": 31763.369116173126,
+                                            "count": 1514132,
+                                            "is_parallel": true,
+                                            "self": 8851.690842090757,
+                                            "children": {
+                                                "steps_from_proto": {
+                                                    "total": 0.006354699959047139,
+                                                    "count": 1,
+                                                    "is_parallel": true

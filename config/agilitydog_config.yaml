@@ -1,0 +1,33 @@
+behaviors:
+  Agility4:
+    trainer_type: ppo #Va bene
+    hyperparameters:
+      batch_size: 200 #Prima era 2560
+      buffer_size: 20000 #Prima era 20240
+      learning_rate: 1.e-5 #Prima era 3.e-4
+      beta: 5.0e-3 #Viene lasciato così
+      epsilon: 0.2 #Viene lasciato così
+      lambd: 0.95 #Viene lasciato così
+      num_epoch: 3 #Viene lasciato così
+      learning_rate_schedule: constant #Prima era linear
+    network_settings:
+      normalize: false #Viene lasciato così
+      hidden_units: 412 #Prima era 328
+      num_layers: 3 #Prima era 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.9 #Prima era 0.99
+        strength: 1.0 #Viene lasciato così
+      gail:
+        gamma: 0.99 #Viene lasciato così
+        demo_path: Demos/Demo4_0.demo #Viene lasciato così
+        strength: 0.3 #Viene lasciato così
+        learning_rate: 1.e-4 #Prima non c'era
+        use_vail: true #Prima non c'era
+    behavioral_cloning:
+      demo_path: Demos/Demo4_0.demo #Rimane così
+      strength: 0.3 #Viene lasciato così
+    max_steps: 500000 #Prima era 1000000
+    time_horizon: 64 #Prima era 1024
+    summary_freq: 50000 #Va bene
+    even_checkpoints: true #Prima non c'era

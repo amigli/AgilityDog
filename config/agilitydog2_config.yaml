@@ -1,0 +1,33 @@
+behaviors:
+  Agility:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 64 
+      buffer_size: 10240 
+      learning_rate: 3.e-4
+      beta: 5.0e-3
+      epsilon: 0.3
+      lambd: 0.95 
+      num_epoch: 5
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false 
+      hidden_units: 264 
+      num_layers: 3 
+    reward_signals:
+      extrinsic:
+        gamma: 0.95
+        strength: 0.99
+      #gail:
+        #demo_path: Demos/Demo7_0.demo 
+        #strength: 0.3 
+        #use_actions: true 
+    #behavioral_cloning:
+      #demo_path: Demos/Demo7_0.demo 
+      #strength: 0.4 
+    max_steps: 1000000
+    time_horizon: 264
+    summary_freq: 100000
+    threaded: true
+    keep_checkpoints: 15
+    checkpoint_interval: 1000000

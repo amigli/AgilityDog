@@ -1,0 +1,38 @@
+{
+    "Agility3": {
+        "checkpoints": [
+            {
+                "steps": 99999,
+                "file_path": "results\\AgilityDog3\\Agility3\\Agility3-99999.onnx",
+                "reward": -0.001970019700197002,
+                "creation_time": 1706953859.394055,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog3\\Agility3\\Agility3-99999.pt"
+                ]
+            },
+            {
+                "steps": 100771,
+                "file_path": "results\\AgilityDog3\\Agility3\\Agility3-100771.onnx",
+                "reward": -0.001959908702987,
+                "creation_time": 1706953879.126271,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog3\\Agility3\\Agility3-100771.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 100771,
+            "file_path": "results\\AgilityDog3\\Agility3.onnx",
+            "reward": -0.001959908702987,
+            "creation_time": 1706953879.126271,
+            "auxillary_file_paths": [
+                "results\\AgilityDog3\\Agility3\\Agility3-100771.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0.dev0",
+        "torch_version": "2.1.1+cpu"
+    }
+}
