@@ -1,3 +1,4 @@
+using System;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -8,8 +9,8 @@ public class AgilityDog : Agent
 {
     
     public float gravity = 20.0f;
-    public float jumpHeight = 1.5f;
-    public float force = 1.0f;
+    public float jumpHeight = 1f;
+    public float force = 0.6f;
 
     private bool isReady;
 
@@ -73,17 +74,17 @@ public class AgilityDog : Agent
     
     public override void OnActionReceived(ActionBuffers actions)
     {
+        //Vai a destra
         if (actions.DiscreteActions[0] == 0)
-        {
-            Debug.Log("Sto Andando a destra!!!");
             MoveRight();
-        }
 
+        //Vai a sinistra
         if (actions.DiscreteActions[0] == 1)
-        {
-            Debug.Log("Sto andando a sinistra!!");
             MoveLeft();
-        }
+        
+        //Salta
+        if(actions.DiscreteActions[0] == 2)
+            Jump();
         
     }
     
@@ -100,50 +101,52 @@ public class AgilityDog : Agent
         
         if (Input.GetKey(KeyCode.LeftArrow) == true)
             discreteActions[0] = 1;
-            
+
+        if (Input.GetKey(KeyCode.Space) == true)
+            discreteActions[0] = 2;
+
     }
 
     
     private void OnCollisionStay(Collision collision)
     {
         
-        //Premio per la carne
+        //Premio per i prosciutti
         if (collision.gameObject.CompareTag("Ricompensa") == true)
         {
-            //Debug.Log("Collisione con ricompensa");
+            //Debug.Log("Ricompensa");
             AddReward(0.5f);
             SC_GroundGenerator.instance.score += 2;
             //Destroy(collision.gameObject);
             collision.gameObject.SetActive(false);
         }
         
-
-        if (collision.gameObject.CompareTag("WrongRight") || collision.gameObject.CompareTag("WrongLeft"))
+        //Penalità se fa la collisione con muro laterale o salta in presenza di
+        //una ricompensa a terra
+        if (collision.gameObject.CompareTag("Wall") == true)
         {
-            AddReward(-0.5f);
-            collision.gameObject.SetActive(false);
+            //Debug.Log("Collisione con muro laterale o penalità salto con albero");
+            AddReward(-0.2f);
+            //collision.gameObject.SetActive(false);
             SC_GroundGenerator.instance.score += -1;
-            EndEpisode();
+            //EndEpisode();
         }
 
-        if (collision.gameObject.CompareTag("Ostacolo"))
+        //Penalità se va a sbattere contro un ostacolo oppure un albero
+        if (collision.gameObject.CompareTag("Finish") == true)
         {
+            //Debug.Log("Collisione con ostacolo o alberi");
             AddReward(-0.5f);
             EndEpisode();
+            SC_GroundGenerator.instance.gameOver = true;
         }
         
         if (collision.gameObject.CompareTag("Piattaforma") == true)
         {
             isReady = true;
         }
-
-        if (collision.gameObject.CompareTag("Wall") == true)
-        {
-            AddReward(-0.2f);
-        }
     }
 
-    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Piattaforma") == true)
@@ -160,8 +163,6 @@ public class AgilityDog : Agent
             isReady = false;
             r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
         }
-
-        //isJumping = true;
     }
     
     

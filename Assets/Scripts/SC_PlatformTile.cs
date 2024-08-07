@@ -34,19 +34,17 @@ public class SC_PlatformTile : MonoBehaviour
                 // Genero l'ostacolo di salto
                 obstacles[0].SetActive(true);
                 ricompense[0].SetActive(true);
-                ricompense[1].SetActive(true);
-                ricompense[2].SetActive(true);
                 break;
             case 1: 
                 // Genero l'albero a destra
                 obstacles[1].SetActive(true);
-                ricompense[3].SetActive(true);
+                ricompense[1].SetActive(true);
                 penalty[0].SetActive(true);
                 break;
             case 2:
                 // Genero l'albero a sinistra
                 obstacles[2].SetActive(true);
-                ricompense[4].SetActive(true);
+                ricompense[2].SetActive(true);
                 penalty[1].SetActive(true);
                 break;
         }

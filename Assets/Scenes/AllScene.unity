@@ -1500,7 +1500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1144457521}
   - component: {fileID: 1144457523}
-  - component: {fileID: 1144457522}
   - component: {fileID: 1144457524}
   - component: {fileID: 1144457525}
   - component: {fileID: 1144457526}
@@ -1531,21 +1530,6 @@ Transform:
   - {fileID: 2126878915}
   m_Father: {fileID: 249018662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1144457522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1144457520}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7ef236a8d61a8b4ba79f20cfbaf0c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravity: 20
-  jumpHeight: 1.5
-  force: 0.3
 --- !u!54 &1144457523
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1607,12 +1591,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 6
+    VectorObservationSize: 0
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 02000000
-    VectorActionSize: 02000000
+      BranchSizes: 03000000
+    VectorActionSize: 03000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -1659,11 +1643,7 @@ MonoBehaviour:
   m_SensorName: ObstaclesSensor
   m_DetectableTags:
   - Ricompensa
-  - Ostacolo4
-  - Ostacolo5
   - Finish
-  - OstacoloLeft
-  - OstacoloRight
   m_RaysPerDirection: 4
   m_MaxRayDegrees: 25
   m_SphereCastRadius: 0.8
@@ -1704,8 +1684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
-  - WrongRight
-  - WrongLeft
+  - Wall
   m_RaysPerDirection: 1
   m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.8

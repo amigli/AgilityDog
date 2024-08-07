@@ -107,12 +107,5 @@ public class SC_IRPlayer : MonoBehaviour
             //print("GameOver!");
             SC_GroundGenerator.instance.gameOver = true;
         }
-        
-        if(collision.gameObject.tag == "WrongRight" || collision.gameObject.tag == "WrongLeft"
-            || collision.gameObject.tag == "WrongUp")
-        {
-            //print("GameOver!");
-            SC_GroundGenerator.instance.gameOver = true;
-        }
     }
 }
