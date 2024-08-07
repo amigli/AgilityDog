@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -10,10 +11,11 @@ public class AgilityDog : Agent
     
     public float gravity = 20.0f;
     public float jumpHeight = 1f;
-    public float force = 0.6f;
+    public float force = 0.3f;
 
     private bool isReady;
 
+    //Raycasy che percepiscono ostacoli e ricompense
     public RayPerceptionSensorComponent3D raycast;
     
     Rigidbody r;
@@ -42,33 +44,56 @@ public class AgilityDog : Agent
     
     public override void CollectObservations(VectorSensor sensor)
     {
-        /*
-        //Aggiungo le informazioni sulla posizione del cane (3 float perché è un vettore)
-        sensor.AddObservation(transform.position.x);
-        //Debug.Log(transform.position.x);
+
+        bool alberoLeft = false;
+        bool alberoRight = false; 
+        bool ostacolo = false;
         
-        sensor.AddObservation(transform.position.y);
-        //Debug.Log(transform.position.y);
-                                                            
-        sensor.AddObservation(transform.position.z);
-        //Debug.Log(transform.position.z);
-      
-        if (SC_PlatformTile.instance != null)
+        if (raycast != null)
         {
-            sensor.AddObservation(SC_PlatformTile.instance.currentPosition.x);
-            //Debug.Log(SC_PlatformTile.instance.currentPosition.x);
+            // Get ray perception results
+            RayPerceptionInput rayInput = raycast.GetRayPerceptionInput();
+            RayPerceptionOutput rayOutput = RayPerceptionSensor.Perceive(rayInput);
 
-            sensor.AddObservation(SC_PlatformTile.instance.currentPosition.y);
-            //Debug.Log(SC_PlatformTile.instance.currentPosition.y);
+            foreach (var ray in rayOutput.RayOutputs)
+            {
+                if (ray.HitTaggedObject)
+                {
+                    Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
+                    
+                    // Check if the hit object has the tag "AlberoLeft"
+                    if (ray.HitGameObject.CompareTag("AlberoLeft"))
+                    {
+                        // Calculate the distance from the agent to the hit object
+                        //float distance = Vector3.Distance(transform.position, ray.HitGameObject.transform.position);
+                        //Debug.Log("Distance to AlberoLeft: " + distance);
+                        alberoLeft = true;
+                        MoveRight();
+                    }
 
-            sensor.AddObservation(SC_PlatformTile.instance.currentPosition.z);
-            //Debug.Log(SC_PlatformTile.instance.currentPosition.z);
+                    if (ray.HitGameObject.CompareTag("AlberoRight"))
+                    {
+                        alberoRight = true;
+                        MoveLeft();
+                    }
+
+                    if (ray.HitGameObject.CompareTag("Finish"))
+                    {
+                        ostacolo = true;
+                        Jump();
+                    }
+                    
+                }
+            }
         }
-        //Debug.Log(sensor.GetObservationSpec().DimensionProperties);
-
-        if (raycast.CompareTag("Ostacolo4") == true);
-            Debug.Log("Ostacolo4");
-            */
+        else
+        {
+            Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
+        }
+                    
+        //sensor.AddObservation(alberoLeft);
+        //sensor.AddObservation(alberoRight);
+        //sensor.AddObservation(ostacolo);
     } 
 
     
@@ -126,19 +151,22 @@ public class AgilityDog : Agent
         if (collision.gameObject.CompareTag("Wall") == true)
         {
             //Debug.Log("Collisione con muro laterale o penalità salto con albero");
-            AddReward(-0.2f);
+            AddReward(-0.3f);
             //collision.gameObject.SetActive(false);
             SC_GroundGenerator.instance.score += -1;
             //EndEpisode();
         }
 
-        //Penalità se va a sbattere contro un ostacolo oppure un albero
-        if (collision.gameObject.CompareTag("Finish") == true)
+        //Penalità se va a sbattere contro un ostacolo
+        if (collision.gameObject.CompareTag("Finish") == true ||
+            collision.gameObject.CompareTag("AlberoLeft") == true ||
+            collision.gameObject.CompareTag("AlberoRight") == true)
         {
             //Debug.Log("Collisione con ostacolo o alberi");
             AddReward(-0.5f);
-            EndEpisode();
-            SC_GroundGenerator.instance.gameOver = true;
+            Debug.Log("Sono nella rilevazione ostacolo");
+            //EndEpisode();
+            //SC_GroundGenerator.instance.gameOver = true;
         }
         
         if (collision.gameObject.CompareTag("Piattaforma") == true)
