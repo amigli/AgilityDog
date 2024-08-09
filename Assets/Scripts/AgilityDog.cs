@@ -18,11 +18,12 @@ public class AgilityDog : Agent
     //Raycasy che percepiscono ostacoli e ricompense
     public RayPerceptionSensorComponent3D raycast;
     
+    //Raycast che percepiscono i muri laterali
+    public RayPerceptionSensorComponent3D wallsRaycast;
+    
     Rigidbody r;
     bool grounded = false;
     Vector3 defaultScale;
-
-    
     
     
     public override void Initialize()
@@ -48,6 +49,8 @@ public class AgilityDog : Agent
         bool alberoLeft = false;
         bool alberoRight = false; 
         bool ostacolo = false;
+        bool wallLeft = false;
+        bool wallRight = false;
         
         if (raycast != null)
         {
@@ -59,7 +62,7 @@ public class AgilityDog : Agent
             {
                 if (ray.HitTaggedObject)
                 {
-                    Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
+                    //Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
                     
                     // Check if the hit object has the tag "AlberoLeft"
                     if (ray.HitGameObject.CompareTag("AlberoLeft"))
@@ -91,11 +94,46 @@ public class AgilityDog : Agent
             Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
         }
                     
-        //sensor.AddObservation(alberoLeft);
-        //sensor.AddObservation(alberoRight);
-        //sensor.AddObservation(ostacolo);
-    } 
+        sensor.AddObservation(alberoLeft ? 1f : 0f);
+        sensor.AddObservation(alberoRight ? 1f : 0f);
+        sensor.AddObservation(ostacolo ? 1f : 0f);
+        
+        if (wallsRaycast != null)
+        {
+            // Get ray perception results
+            RayPerceptionInput rayInputWalls = wallsRaycast.GetRayPerceptionInput();
+            RayPerceptionOutput rayOutputWalls = RayPerceptionSensor.Perceive(rayInputWalls);
 
+            foreach (var ray in rayOutputWalls.RayOutputs)
+            {
+                if (ray.HitTaggedObject)
+                {
+                    //Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
+
+                    if (ray.HitGameObject.CompareTag("WallLeft"))
+                    {
+                        wallLeft = true;
+                    }
+
+                    if (ray.HitGameObject.CompareTag("WallRight"))
+                    {
+                        wallRight = true;
+                    }
+                    
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
+        }
+        
+        sensor.AddObservation(wallLeft ? 1f : 0f);
+        sensor.AddObservation(wallRight ? 1f : 0f);
+    } 
+    
+   
+   
     
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -164,9 +202,9 @@ public class AgilityDog : Agent
         {
             //Debug.Log("Collisione con ostacolo o alberi");
             AddReward(-0.5f);
-            Debug.Log("Sono nella rilevazione ostacolo");
-            //EndEpisode();
-            //SC_GroundGenerator.instance.gameOver = true;
+            //Debug.Log("Sono nella rilevazione ostacolo");
+            EndEpisode();
+            SC_GroundGenerator.instance.gameOver = true;
         }
         
         if (collision.gameObject.CompareTag("Piattaforma") == true)
@@ -231,7 +269,7 @@ public class AgilityDog : Agent
     {
         // We apply gravity manually for more tuning control
         //r.AddForce(new Vector3(0, -gravity * r.mass, 0));
-
+        
         //RequestDecision();
         
         grounded = false;

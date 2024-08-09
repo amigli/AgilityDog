@@ -47,6 +47,11 @@ public class SC_PlatformTile : MonoBehaviour
                 ricompense[2].SetActive(true);
                 penalty[1].SetActive(true);
                 break;
+            case 3:
+                //Genero ostacolo di salto a muretto
+                obstacles[3].SetActive(true);
+                ricompense[3].SetActive(true);
+                break;
         }
 
     }
