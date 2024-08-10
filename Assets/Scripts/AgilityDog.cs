@@ -1,19 +1,17 @@
-using System;
-using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
-using Object = System.Object;
 
 public class AgilityDog : Agent
 {
     
     public float gravity = 20.0f;
     public float jumpHeight = 1f;
-    public float force = 0.3f;
+    public float force = 0.5f;
 
-    private bool isReady;
+    private bool isReady = false;
+    private bool isGrounded = false; 
 
     //Raycasy che percepiscono ostacoli e ricompense
     public RayPerceptionSensorComponent3D raycast;
@@ -31,7 +29,6 @@ public class AgilityDog : Agent
         r = GetComponent<Rigidbody>();
         r.constraints = RigidbodyConstraints.FreezePositionZ;
         r.freezeRotation = true;
-        //r.useGravity = false;
         defaultScale = transform.localScale;
         
     }
@@ -71,19 +68,19 @@ public class AgilityDog : Agent
                         //float distance = Vector3.Distance(transform.position, ray.HitGameObject.transform.position);
                         //Debug.Log("Distance to AlberoLeft: " + distance);
                         alberoLeft = true;
-                        MoveRight();
+                        //MoveRight();
                     }
 
                     if (ray.HitGameObject.CompareTag("AlberoRight"))
                     {
                         alberoRight = true;
-                        MoveLeft();
+                        //MoveLeft();
                     }
 
                     if (ray.HitGameObject.CompareTag("Finish"))
                     {
                         ostacolo = true;
-                        Jump();
+                        //Jump();
                     }
                     
                 }
@@ -95,8 +92,8 @@ public class AgilityDog : Agent
         }
                     
         sensor.AddObservation(alberoLeft ? 1f : 0f);
-        sensor.AddObservation(alberoRight ? 1f : 0f);
-        sensor.AddObservation(ostacolo ? 1f : 0f);
+        sensor.AddObservation(alberoRight ? 2f : 0f);
+        sensor.AddObservation(ostacolo ? 3f : 0f);
         
         if (wallsRaycast != null)
         {
@@ -128,8 +125,8 @@ public class AgilityDog : Agent
             Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
         }
         
-        sensor.AddObservation(wallLeft ? 1f : 0f);
-        sensor.AddObservation(wallRight ? 1f : 0f);
+        sensor.AddObservation(wallLeft ? 4f : 0f);
+        sensor.AddObservation(wallRight ? 5f : 0f);
     } 
     
    
@@ -146,7 +143,7 @@ public class AgilityDog : Agent
             MoveLeft();
         
         //Salta
-        if(actions.DiscreteActions[0] == 2)
+        if(actions.DiscreteActions[0] == 2 && isGrounded && isReady)
             Jump();
         
     }
@@ -210,6 +207,16 @@ public class AgilityDog : Agent
         if (collision.gameObject.CompareTag("Piattaforma") == true)
         {
             isReady = true;
+            isGrounded = true;
+            AddReward(0.3f);
+        }
+    }
+    
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Piattaforma"))
+        {
+            isGrounded = false; // Non più a terra
         }
     }
 
@@ -218,6 +225,8 @@ public class AgilityDog : Agent
         if (other.gameObject.CompareTag("Piattaforma") == true)
         {
             isReady = true;
+            isGrounded = true;
+            AddReward(0.3f);
         }
     }
 
@@ -229,13 +238,12 @@ public class AgilityDog : Agent
             isReady = false;
             r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
         }
+        AddReward(-0.005f);
     }
     
     
     float CalculateJumpVerticalSpeed()
     {
-        // From the jump height and gravity we deduce the upwards speed 
-        // for the character to reach at the apex.
         return Mathf.Sqrt(2 * jumpHeight * gravity);
     }
 
@@ -245,9 +253,6 @@ public class AgilityDog : Agent
         if (isReady)
         {
             r.AddForce(Vector3.right * force, ForceMode.Impulse);
-            //transform.position = new Vector3(transform.position.x + 2.0f, transform.position.y, transform.position.z);
-            //transform.position += new Vector3(+7.0f * Time.deltaTime, 0f, 0f);
-            //r.AddForce(right * force, ForceMode.Impulse);
         }
     }
 
@@ -257,9 +262,6 @@ public class AgilityDog : Agent
         if (isReady)
         {
             r.AddForce(Vector3.left * force, ForceMode.Impulse);
-            //transform.position = new Vector3(transform.position.x - 2.0f, transform.position.y, transform.position.z);
-            //transform.position += new Vector3(-7.0f * Time.deltaTime, 0f, 0f);
-            //r.AddForce(left * force, ForceMode.Impulse);
 
         }
     }
@@ -272,8 +274,11 @@ public class AgilityDog : Agent
         
         //RequestDecision();
         
-        grounded = false;
+        //grounded = false;
     }
+    
+    
+
     
    
 }
