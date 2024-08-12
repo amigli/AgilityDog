@@ -16,11 +16,6 @@ behaviors:
     reward_signals:
       extrinsic:
         gamma: 0.99
-    max_steps: 5.0e4
+    max_steps: 100000
     time_horizon: 64
-    sequence_length: 64
     summary_freq: 1000
-    use_recurrent: false
-    use_curiosity: false
-    curiosity_strength: 0.01
-    curiosity_enc_size: 128

@@ -1,3 +1,5 @@
+// Classe originale utilizzata per l'addestramento
+
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -9,6 +11,7 @@ public class AgilityDog : Agent
     public float gravity = 20.0f;
     public float jumpHeight = 1f;
     public float force = 0.5f;
+    float moveSpeed = 10f;
 
     private bool isReady = false;
     private bool isGrounded = false; 
@@ -40,111 +43,125 @@ public class AgilityDog : Agent
     }
     
     
-    public override void CollectObservations(VectorSensor sensor)
-    {
+    
 
-        bool alberoLeft = false;
-        bool alberoRight = false; 
-        bool ostacolo = false;
-        bool wallLeft = false;
-        bool wallRight = false;
-        
+
+    private bool isObstacleAhead()
+    {
         if (raycast != null)
         {
-            // Get ray perception results
             RayPerceptionInput rayInput = raycast.GetRayPerceptionInput();
             RayPerceptionOutput rayOutput = RayPerceptionSensor.Perceive(rayInput);
 
             foreach (var ray in rayOutput.RayOutputs)
             {
-                if (ray.HitTaggedObject)
+                if (ray.HitTaggedObject && ray.HitGameObject.CompareTag("Finish"))
                 {
-                    //Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
-                    
-                    // Check if the hit object has the tag "AlberoLeft"
-                    if (ray.HitGameObject.CompareTag("AlberoLeft"))
-                    {
-                        // Calculate the distance from the agent to the hit object
-                        //float distance = Vector3.Distance(transform.position, ray.HitGameObject.transform.position);
-                        //Debug.Log("Distance to AlberoLeft: " + distance);
-                        alberoLeft = true;
-                        //MoveRight();
-                    }
-
-                    if (ray.HitGameObject.CompareTag("AlberoRight"))
-                    {
-                        alberoRight = true;
-                        //MoveLeft();
-                    }
-
-                    if (ray.HitGameObject.CompareTag("Finish"))
-                    {
-                        ostacolo = true;
-                        //Jump();
-                    }
-                    
+                    return true;
                 }
             }
         }
-        else
-        {
-            Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
-        }
-                    
-        sensor.AddObservation(alberoLeft ? 1f : 0f);
-        sensor.AddObservation(alberoRight ? 2f : 0f);
-        sensor.AddObservation(ostacolo ? 3f : 0f);
-        
-        if (wallsRaycast != null)
-        {
-            // Get ray perception results
-            RayPerceptionInput rayInputWalls = wallsRaycast.GetRayPerceptionInput();
-            RayPerceptionOutput rayOutputWalls = RayPerceptionSensor.Perceive(rayInputWalls);
 
-            foreach (var ray in rayOutputWalls.RayOutputs)
+        return false;
+    }
+
+    private bool isAlberoLeft()
+    {
+        if (raycast != null)
+        {
+            RayPerceptionInput rayInput = raycast.GetRayPerceptionInput();
+            RayPerceptionOutput rayOutput = RayPerceptionSensor.Perceive(rayInput);
+
+            foreach (var ray in rayOutput.RayOutputs)
             {
-                if (ray.HitTaggedObject)
+                if (ray.HitTaggedObject && ray.HitGameObject.CompareTag("AlberoLeft"))
                 {
-                    //Debug.Log("Tag of hit object: " + ray.HitGameObject.tag);
-
-                    if (ray.HitGameObject.CompareTag("WallLeft"))
-                    {
-                        wallLeft = true;
-                    }
-
-                    if (ray.HitGameObject.CompareTag("WallRight"))
-                    {
-                        wallRight = true;
-                    }
-                    
+                    return true;
                 }
             }
         }
-        else
+
+        return false;
+    }
+
+    private bool isAlberoRight()
+    {
+        if (raycast != null)
         {
-            Debug.LogError("RayPerceptionSensorComponent3D is not set up properly.");
+            RayPerceptionInput rayInput = raycast.GetRayPerceptionInput();
+            RayPerceptionOutput rayOutput = RayPerceptionSensor.Perceive(rayInput);
+
+            foreach (var ray in rayOutput.RayOutputs)
+            {
+                if (ray.HitTaggedObject && ray.HitGameObject.CompareTag("AlberoRight"))
+                {
+                    return true;
+                }
+            }
         }
-        
-        sensor.AddObservation(wallLeft ? 4f : 0f);
-        sensor.AddObservation(wallRight ? 5f : 0f);
-    } 
-    
-   
-   
-    
+
+        return false;
+    }
+
     public override void OnActionReceived(ActionBuffers actions)
     {
         //Vai a destra
         if (actions.DiscreteActions[0] == 0)
+        {
+            
             MoveRight();
-
+            /*
+            if (isAlberoLeft())
+            {
+                MoveRight();
+            }
+            else
+            {
+                //Penalità
+                AddReward(-0.1f);
+            }
+            */
+            
+        }
+            
+        
         //Vai a sinistra
         if (actions.DiscreteActions[0] == 1)
+        {
+            
             MoveLeft();
-        
+            /*
+            if (isAlberoRight())
+            {
+                MoveLeft();
+            }
+            else
+            {
+                //Penalità
+                AddReward(-0.1f);
+            }
+            */
+        }
+            
+
         //Salta
-        if(actions.DiscreteActions[0] == 2 && isGrounded && isReady)
+        if (actions.DiscreteActions[0] == 2)
+        {
+            
             Jump();
+            /*
+            if (isObstacleAhead())
+            {
+                Jump();
+            }
+            else
+            {
+                //Penalizzo un salto non necessario
+                AddReward(-0.1f);
+            }
+            */
+        }
+            
         
     }
     
@@ -238,7 +255,7 @@ public class AgilityDog : Agent
             isReady = false;
             r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
         }
-        AddReward(-0.005f);
+        AddReward(-0.1f);
     }
     
     
@@ -252,7 +269,16 @@ public class AgilityDog : Agent
     {
         if (isReady)
         {
-            r.AddForce(Vector3.right * force, ForceMode.Impulse);
+            //r.AddForce(Vector3.right * force, ForceMode.Impulse);
+            
+            // Get the current position
+            Vector3 currentPosition = transform.position;
+        
+            // Set the new position with X = -0.49 and keep Y and Z the same
+            Vector3 targetPosition = new Vector3(1f, currentPosition.y, currentPosition.z);
+        
+            // Move the agent smoothly towards the target position
+            transform.position = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
         }
     }
 
@@ -261,24 +287,22 @@ public class AgilityDog : Agent
     {
         if (isReady)
         {
-            r.AddForce(Vector3.left * force, ForceMode.Impulse);
+            //r.AddForce(Vector3.left * force, ForceMode.Impulse);
+            
+            // Get the current position
+            Vector3 currentPosition = transform.position;
+        
+            // Define the target position with X = -1f, keeping Y and Z the same
+            Vector3 targetPosition = new Vector3(-1f, currentPosition.y, currentPosition.z);
+        
+            // Move the agent smoothly towards the target position
+            transform.position = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
 
         }
     }
     
     
-    void FixedUpdate()
-    {
-        // We apply gravity manually for more tuning control
-        //r.AddForce(new Vector3(0, -gravity * r.mass, 0));
-        
-        //RequestDecision();
-        
-        //grounded = false;
-    }
-    
     
 
-    
    
 }

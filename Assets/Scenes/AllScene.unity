@@ -1555,7 +1555,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!65 &1144457524
 BoxCollider:
@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 5
+    VectorObservationSize: 0
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -1600,9 +1600,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 9a26ef1fe93b1be45bfbf81934f1d326, type: 3}
   m_InferenceDevice: 1
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: Agility
   TeamId: 0
   m_UseChildSensors: 1
