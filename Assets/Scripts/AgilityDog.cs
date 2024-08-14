@@ -1,5 +1,6 @@
 // Classe originale utilizzata per l'addestramento
 
+using System;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -8,7 +9,7 @@ using UnityEngine;
 public class AgilityDog : Agent
 {
     
-    public float gravity = 20.0f;
+    public float gravity = 30.0f;
     public float jumpHeight = 1f;
     public float force = 0.5f;
     float moveSpeed = 10f;
@@ -40,6 +41,7 @@ public class AgilityDog : Agent
     public override void OnEpisodeBegin()
     {
         isReady = true;
+        isGrounded = false;
     }
     
     
@@ -145,9 +147,8 @@ public class AgilityDog : Agent
             
 
         //Salta
-        if (actions.DiscreteActions[0] == 2)
+        if (actions.DiscreteActions[0] == 2 && isGrounded)
         {
-            
             Jump();
             /*
             if (isObstacleAhead())
@@ -161,7 +162,36 @@ public class AgilityDog : Agent
             }
             */
         }
-            
+            /*
+        // Ricompensa o penalità in base al risultato dell'azione
+        if (isAlberoLeft() && actions.DiscreteActions[0] == 0)
+        {
+            AddReward(0.6f); // Ricompensa se va a destra quando c'è AlberoLeft
+        }
+        else if (isAlberoLeft() && actions.DiscreteActions[0] != 0)
+        {
+            AddReward(-0.6f); // Penalità se fa qualcosa di diverso
+        }
+
+        if (isAlberoRight() && actions.DiscreteActions[0] == 1)
+        {
+            AddReward(0.6f); // Ricompensa se va a sinistra quando c'è AlberoRight
+        }
+        else if (isAlberoRight() && actions.DiscreteActions[0] != 1)
+        {
+            AddReward(-0.6f); // Penalità se fa qualcosa di diverso
+        }
+
+        if (isObstacleAhead() && actions.DiscreteActions[0] == 2)
+        {
+            AddReward(0.8f); // Ricompensa se salta quando c'è un ostacolo
+        }
+        else if (isObstacleAhead() && actions.DiscreteActions[0] != 2)
+        {
+            AddReward(-0.8f); // Penalità se non salta quando c'è un ostacolo
+        }
+        */
+        
         
     }
     
@@ -179,7 +209,7 @@ public class AgilityDog : Agent
         if (Input.GetKey(KeyCode.LeftArrow) == true)
             discreteActions[0] = 1;
 
-        if (Input.GetKey(KeyCode.Space) == true)
+        if (Input.GetKey(KeyCode.Space) == true && isGrounded)
             discreteActions[0] = 2;
 
     }
@@ -215,7 +245,7 @@ public class AgilityDog : Agent
             collision.gameObject.CompareTag("AlberoRight") == true)
         {
             //Debug.Log("Collisione con ostacolo o alberi");
-            AddReward(-0.5f);
+            AddReward(-0.8f);
             //Debug.Log("Sono nella rilevazione ostacolo");
             EndEpisode();
             SC_GroundGenerator.instance.gameOver = true;
@@ -225,6 +255,8 @@ public class AgilityDog : Agent
         {
             isReady = true;
             isGrounded = true;
+            //Debug.Log("[OnCollisionStay] Sono a terra");
+            //Debug.Log("[OnCollisionStay] - IsGrounded: " + isGrounded);
             AddReward(0.3f);
         }
     }
@@ -234,28 +266,44 @@ public class AgilityDog : Agent
         if (collision.gameObject.CompareTag("Piattaforma"))
         {
             isGrounded = false; // Non più a terra
+            //Debug.Log("[OnCollisionExit] Sono in aria");
+            //Debug.Log("[OnCollisionExit] - IsGrounded: " + isGrounded);
         }
     }
 
+    /*
+     //Non viene preso, quindi inutile
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Piattaforma") == true)
         {
             isReady = true;
             isGrounded = true;
-            AddReward(0.3f);
+            Debug.Log("[OnTriggerEnter] Sono a terra");
+            //AddReward(0.7f);
         }
     }
-
+    */
 
     void Jump()
     {
-        if (isReady)
+        if (isGrounded)
         {
-            isReady = false;
             r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
+
+            if (!isObstacleAhead())
+            {
+                AddReward(-0.9f); // Penalità per un salto non necessario
+            }
+            else
+            {
+                AddReward(0.9f); // Ricompensa per un salto corretto
+            }
         }
-        AddReward(-0.1f);
+        else
+        {
+            AddReward(-0.4f); // Penalità se tenta di saltare quando non è pronto
+        }
     }
     
     
@@ -270,7 +318,6 @@ public class AgilityDog : Agent
         if (isReady)
         {
             //r.AddForce(Vector3.right * force, ForceMode.Impulse);
-            
             // Get the current position
             Vector3 currentPosition = transform.position;
         
@@ -279,6 +326,7 @@ public class AgilityDog : Agent
         
             // Move the agent smoothly towards the target position
             transform.position = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
+            
         }
     }
 
@@ -288,7 +336,6 @@ public class AgilityDog : Agent
         if (isReady)
         {
             //r.AddForce(Vector3.left * force, ForceMode.Impulse);
-            
             // Get the current position
             Vector3 currentPosition = transform.position;
         
@@ -297,12 +344,15 @@ public class AgilityDog : Agent
         
             // Move the agent smoothly towards the target position
             transform.position = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
-
+            
         }
     }
-    
-    
-    
 
-   
+    private void FixedUpdate()
+    {
+        if (isAlberoLeft() || isAlberoRight() || isObstacleAhead())
+        {
+            RequestDecision();
+        }
+    }
 }
