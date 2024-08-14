@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -62,7 +61,7 @@ public class SC_GroundGenerator : MonoBehaviour
         if (!gameOver && gameStarted)
         {
             transform.Translate(-spawnedTiles[0].transform.forward * Time.deltaTime * (movingSpeed + (score/500)), Space.World);
-            //score += Time.deltaTime * movingSpeed;
+            
         }
 
         if (mainCamera.WorldToViewportPoint(spawnedTiles[0].endPoint.position).z < 0)
@@ -81,21 +80,6 @@ public class SC_GroundGenerator : MonoBehaviour
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
             gameStarted = true;
-            /*
-            if (Input.GetKey(KeyCode.A))
-            {
-                if (gameOver)
-                {
-                    //Restart current scene
-                    Scene scene = SceneManager.GetActiveScene();
-                    SceneManager.LoadScene(scene.name);
-                }
-                else
-                {
-                    //Start the game
-                    gameStarted = true;
-                }
-            }*/
         }
     }
 
@@ -104,19 +88,19 @@ public class SC_GroundGenerator : MonoBehaviour
         if (gameOver)
         {
             GUI.color = Color.red;
-            GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Over\nYour score is: " + ((int)score) + "\nPress 'A' to restart");
+            GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Over");
         }
         else
         {
             if (!gameStarted)
             {
                 GUI.color = Color.red;
-                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Press 'A' to start");
+                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Start");
             }
         }
 
 
-        GUI.color = Color.black;
-        GUI.Label(new Rect(5, 5, 200, 25), "Score: " + ((int)score));
+        //GUI.color = Color.black;
+        //GUI.Label(new Rect(5, 5, 200, 25), "Score: " + ((int)score));
     }
 }
