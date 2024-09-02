@@ -17,6 +17,8 @@ public class SC_GroundGenerator : MonoBehaviour
     public bool gameOver = false;
     static bool gameStarted = false;
     public float score = 0;
+    
+    private int rewardCount = 0; // Contatore delle ricompense raccolte
 
     //private List<Vector3> posizioni;
     
@@ -48,6 +50,17 @@ public class SC_GroundGenerator : MonoBehaviour
             spawnPosition = spawnedTile.endPoint.position;
             spawnedTile.transform.SetParent(transform);
             spawnedTiles.Add(spawnedTile);
+        }
+    }
+    
+    // Metodo per incrementare la velocità
+    public void IncreaseSpeed()
+    {
+        rewardCount++;
+        if (rewardCount % 10 == 0) // Aumenta la velocità ogni 10 ricompense
+        {
+            movingSpeed += 3f;  // Incrementa la velocità di movimento
+            Debug.Log("Velocità attuale: " + movingSpeed);
         }
     }
 

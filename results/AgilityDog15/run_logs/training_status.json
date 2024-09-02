@@ -1,0 +1,29 @@
+{
+    "Agility": {
+        "checkpoints": [
+            {
+                "steps": 83176,
+                "file_path": "results\\AgilityDog15\\Agility\\Agility-83176.onnx",
+                "reward": 182.97998847961426,
+                "creation_time": 1725101772.7217398,
+                "auxillary_file_paths": [
+                    "results\\AgilityDog15\\Agility\\Agility-83176.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 83176,
+            "file_path": "results\\AgilityDog15\\Agility.onnx",
+            "reward": 182.97998847961426,
+            "creation_time": 1725101772.7217398,
+            "auxillary_file_paths": [
+                "results\\AgilityDog15\\Agility\\Agility-83176.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0.dev0",
+        "torch_version": "2.1.1+cpu"
+    }
+}

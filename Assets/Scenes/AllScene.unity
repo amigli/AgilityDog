@@ -1625,9 +1625,7 @@ MonoBehaviour:
   MaxStep: 0
   gravity: 20
   jumpHeight: 1.2
-  force: 0.5
   raycast: {fileID: 1144457528}
-  wallsRaycast: {fileID: 1144457533}
 --- !u!114 &1144457528
 MonoBehaviour:
   m_ObjectHideFlags: 0

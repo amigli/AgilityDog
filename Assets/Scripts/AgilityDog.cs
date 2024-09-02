@@ -9,6 +9,7 @@ public class AgilityDog : Agent
     public float gravity = 30.0f;
     public float jumpHeight = 1f;
     float moveSpeed = 10f;
+    //private int rewardCount = 0;
 
     private bool isReady = false;
     private bool isGrounded = false; 
@@ -33,6 +34,8 @@ public class AgilityDog : Agent
     {
         isReady = true;
         isGrounded = false;
+        //rewardCount = 0; // Resetta il contatore delle ricompense all'inizio dell'episodio
+        moveSpeed = 10f; // Resetta la velocità di movimento
     }
     
     public override void OnActionReceived(ActionBuffers actions)
@@ -75,6 +78,19 @@ public class AgilityDog : Agent
             AddReward(0.5f);
             SC_GroundGenerator.instance.score += 2;
             collision.gameObject.SetActive(false);
+            
+            // Chiama IncreaseSpeed per aumentare la velocità ogni 10 ricompense
+            SC_GroundGenerator.instance.IncreaseSpeed();
+            // Incrementa il contatore delle ricompense
+            //rewardCount++;
+
+            /* Aumenta la velocità di movimento ogni 10 ricompense
+            if (rewardCount % 10 == 0)
+            {
+                moveSpeed += 10f;
+                Debug.Log(moveSpeed);
+            }
+            */
         }
         
         //Penalità se va contro i muri laterali
@@ -113,15 +129,27 @@ public class AgilityDog : Agent
     
     void Jump()
     {
+        // Controlla se l'agente è a terra
         if (isGrounded)
         {
-            r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
+            // Penalizza se tenta di saltare quando c'è un albero a sinistra o a destra
+            if (isAlberoLeft() || isAlberoRight())
+            {
+                AddReward(-0.5f); 
+            }
+            else
+            {
+                // Esegui il salto
+                r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
+            }
         }
         else
         {
-            AddReward(-0.4f); // Penalità se tenta di saltare quando non già è in aria
+            // Penalità per tentativo di salto quando non è a terra
+            AddReward(-0.4f);
         }
     }
+
     
     float CalculateJumpVerticalSpeed()
     {

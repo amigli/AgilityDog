@@ -1601,7 +1601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3517465817000159781, guid: ba43438e580714421b77702924702e2b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3517465817000159781, guid: ba43438e580714421b77702924702e2b, type: 3}
       propertyPath: m_TagString
@@ -2394,6 +2394,10 @@ PrefabInstance:
     - target: {fileID: 4670596712750141225, guid: 771501db12c08764eb020ef5ab01840e, type: 3}
       propertyPath: m_Name
       value: fence03_b
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670596712750141225, guid: 771501db12c08764eb020ef5ab01840e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4670596712750141225, guid: 771501db12c08764eb020ef5ab01840e, type: 3}
       propertyPath: m_TagString
