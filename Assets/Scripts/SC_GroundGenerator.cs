@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 public class SC_GroundGenerator : MonoBehaviour
 {
     public Camera mainCamera;
-    public Transform startPoint; //Point from where ground tiles will start
+    public Transform startPoint; 
     public SC_PlatformTile tilePrefab;
     public float movingSpeed = 8;
-    public int tilesToPreSpawn = 1; //How many tiles should be pre-spawned
-    public int tilesWithoutObstacles = 0; //How many tiles at the beginning should not have obstacles, good for warm-up
+    public int tilesToPreSpawn = 1; 
+    public int tilesWithoutObstacles = 0; 
     
     List<SC_PlatformTile> spawnedTiles = new List<SC_PlatformTile>();
     int nextTileToActivate = -1;
@@ -19,17 +19,13 @@ public class SC_GroundGenerator : MonoBehaviour
     public float score = 0;
     
     private int rewardCount = 0; // Contatore delle ricompense raccolte
-
-    //private List<Vector3> posizioni;
     
     public static SC_GroundGenerator instance;
 
-    // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        //posizioni = new List<Vector3>();
-
+        
         Vector3 spawnPosition = startPoint.position;
         int tilesWithNoObstaclesTmp = tilesWithoutObstacles;
         for (int i = 0; i < tilesToPreSpawn; i++)
@@ -59,18 +55,15 @@ public class SC_GroundGenerator : MonoBehaviour
         rewardCount++;
         if (rewardCount % 10 == 0) // Aumenta la velocità ogni 10 ricompense
         {
-            movingSpeed += 3f;  // Incrementa la velocità di movimento
+            movingSpeed += 3f;  // Incrementa la velocità di movimento di 3
             Debug.Log("Velocità attuale: " + movingSpeed);
         }
     }
 
     
 
-    // Update is called once per frame
     void Update()
     {
-        // Move the object upward in world space x unit/second.
-        //Increase speed the higher score we get
         if (!gameOver && gameStarted)
         {
             transform.Translate(-spawnedTiles[0].transform.forward * Time.deltaTime * (movingSpeed + (score/500)), Space.World);
@@ -79,7 +72,6 @@ public class SC_GroundGenerator : MonoBehaviour
 
         if (mainCamera.WorldToViewportPoint(spawnedTiles[0].endPoint.position).z < 0)
         {
-            //Move the tile to the front if it's behind the Camera
             SC_PlatformTile tileTmp = spawnedTiles[0];
             spawnedTiles.RemoveAt(0);
             tileTmp.transform.position = spawnedTiles[spawnedTiles.Count - 1].endPoint.position - tileTmp.startPoint.localPosition;
@@ -89,7 +81,6 @@ public class SC_GroundGenerator : MonoBehaviour
 
         if (gameOver || !gameStarted)
         {
-            //Torna alla posizione iniziale
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
             gameStarted = true;
@@ -111,9 +102,6 @@ public class SC_GroundGenerator : MonoBehaviour
                 GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "Game Start");
             }
         }
-
-
-        //GUI.color = Color.black;
-        //GUI.Label(new Rect(5, 5, 200, 25), "Score: " + ((int)score));
+        
     }
 }

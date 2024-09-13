@@ -9,7 +9,6 @@ public class AgilityDog : Agent
     public float gravity = 30.0f;
     public float jumpHeight = 1f;
     float moveSpeed = 10f;
-    //private int rewardCount = 0;
 
     private bool isReady = false;
     private bool isGrounded = false; 
@@ -34,8 +33,7 @@ public class AgilityDog : Agent
     {
         isReady = true;
         isGrounded = false;
-        //rewardCount = 0; // Resetta il contatore delle ricompense all'inizio dell'episodio
-        moveSpeed = 10f; // Resetta la velocità di movimento
+        moveSpeed = 10f;
     }
     
     public override void OnActionReceived(ActionBuffers actions)
@@ -80,20 +78,12 @@ public class AgilityDog : Agent
             collision.gameObject.SetActive(false);
             
             // Chiama IncreaseSpeed per aumentare la velocità ogni 10 ricompense
-            SC_GroundGenerator.instance.IncreaseSpeed();
+            //SC_GroundGenerator.instance.IncreaseSpeed();
             // Incrementa il contatore delle ricompense
             //rewardCount++;
-
-            /* Aumenta la velocità di movimento ogni 10 ricompense
-            if (rewardCount % 10 == 0)
-            {
-                moveSpeed += 10f;
-                Debug.Log(moveSpeed);
-            }
-            */
         }
         
-        //Penalità se va contro i muri laterali
+        //Penalità se va contro i muri
         if (collision.gameObject.CompareTag("Wall") == true)
         {
             AddReward(-0.3f);
@@ -139,7 +129,7 @@ public class AgilityDog : Agent
             }
             else
             {
-                // Esegui il salto
+                // Esegue il salto
                 r.velocity = new Vector3(r.velocity.x, CalculateJumpVerticalSpeed(), r.velocity.z);
             }
         }

@@ -5,7 +5,7 @@ public class SC_PlatformTile : MonoBehaviour
 {
     public Transform startPoint;
     public Transform endPoint;
-    public GameObject[] obstacles; //Objects that contains different obstacle types which will be randomly activated
+    public GameObject[] obstacles; 
     public GameObject[] ricompense;
     public GameObject[] penalty;
     
@@ -25,7 +25,7 @@ public class SC_PlatformTile : MonoBehaviour
         DeactivateAllObstacles();
         
         System.Random random = new System.Random();
-        //Genero un numero casuale, a cui corrispondono gli ostacoli NON di salto
+        
         int randomNumber = random.Next(0, 4);
 
         switch (randomNumber)
