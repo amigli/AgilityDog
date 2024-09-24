@@ -100,4 +100,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+config/
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,unity
